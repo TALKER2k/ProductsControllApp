@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - preConditions:
+      - dbms:
+          type: postgresql
+  - changeSet:
+      id: SSR-003-090720231530
+      author: Nikita Pushkin
+      comment: Create bd
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: SSR-003-090720231530.sql
+            relativeToChangelogFile: true
