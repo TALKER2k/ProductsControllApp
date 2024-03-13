@@ -19,4 +19,4 @@ spring:
           lob:
             non_contextual_creation: true
   liquibase:
-    change-log: classpath:db/changelog/master-changelog.yaml
+    change-log: classpath:db.changelog/master-changelog.yaml
