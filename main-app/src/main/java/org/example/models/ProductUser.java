@@ -1,6 +1,7 @@
 package org.example.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -23,5 +24,6 @@ public class ProductUser {
     private Product product;
 
     @Column(name = "remainder")
+    @Min(value = 0, message = "Remainder must be non-negative")
     private Double remainder;
 }
