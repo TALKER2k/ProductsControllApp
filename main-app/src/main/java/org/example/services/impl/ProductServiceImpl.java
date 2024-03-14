@@ -35,10 +35,10 @@ public class ProductServiceImpl implements ProductService {
         List<User> users = userRepository.findAll();
 
         for (User user : users) {
-            ProductUser productUser = new ProductUser();
-            productUser.setUser(user);
-            productUser.setProduct(product);
-            productUser.setRemainder(productDTO.getRemainder());
+            ProductUser productUser = new ProductUser()
+                    .setUser(user)
+                    .setProduct(product)
+                    .setRemainder(productDTO.getRemainder());
 
             productUserRepository.save(productUser);
         }

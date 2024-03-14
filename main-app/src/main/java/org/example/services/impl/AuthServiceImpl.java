@@ -62,10 +62,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public User registerUser(RegisterDTO registerDto) {
-        User user = converToUser(registerDto);
-        userRepository.save(user);
+        User registeredUser = converToUser(registerDto);
+        userRepository.save(registeredUser);
 
-        return user;
+        return registeredUser;
     }
 
     @Override

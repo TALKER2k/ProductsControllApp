@@ -34,17 +34,17 @@ public class ProductCollectServiceImpl implements ProductCollectService {
     @Override
     @Transactional
     public void collectProduct(CollectProductDTO collectProductDTO, String username) {
-        User user = userRepository.findByUserName(username).orElseThrow();
-        Product product = productRepository.findByName(collectProductDTO.getName()).orElseThrow();
+        User userCollectedProduct = userRepository.findByUserName(username).orElseThrow();
+        Product collectedProduct = productRepository.findByName(collectProductDTO.getName()).orElseThrow();
         HistoryCollectProduct historyCollectProduct = new HistoryCollectProduct()
                 .setCollect(collectProductDTO.getCollect())
                 .setCollectedAt(LocalDateTime.now())
-                .setUser(user)
-                .setProduct(product);
+                .setUser(userCollectedProduct)
+                .setProduct(collectedProduct);
 
         historyCollectProductRepository.save(historyCollectProduct);
 
-        ProductUser productUser = productUserRepository.findByUserIdAndProductId(user.getId(), product.getId());
+        ProductUser productUser = productUserRepository.findByUserIdAndProductId(userCollectedProduct.getId(), collectedProduct.getId());
         productUser.setRemainder(productUser.getRemainder() - collectProductDTO.getCollect());
         productUserRepository.save(productUser);
     }
@@ -54,13 +54,10 @@ public class ProductCollectServiceImpl implements ProductCollectService {
         List<ProductUser> productUsers = productUserRepository.findByUserId(userRepository.findByUserName(username).orElseThrow().getId());
 
         return productUsers.stream()
-                .map(productUser -> {
-                    ProductDTO productDTO = new ProductDTO();
-                    productDTO.setName(productUser.getProduct().getName());
-                    productDTO.setMeasurementUnit(productUser.getProduct().getMeasurementUnit());
-                    productDTO.setRemainder(productUser.getRemainder());
-                    return productDTO;
-                })
+                .map(productUser -> new ProductDTO()
+                            .setName(productUser.getProduct().getName())
+                            .setMeasurementUnit(productUser.getProduct().getMeasurementUnit())
+                            .setRemainder(productUser.getRemainder()))
                 .toList();
     }
 }

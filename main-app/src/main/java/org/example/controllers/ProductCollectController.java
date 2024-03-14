@@ -36,7 +36,7 @@ public class ProductCollectController {
     }
 
     @GetMapping("/check_my_collect")
-    public List<ProductDTO> getMyCollects() {
+    public List<ProductDTO> getMyCollectProducts() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return productCollectService.getListProductForCollect(auth.getName());
     }

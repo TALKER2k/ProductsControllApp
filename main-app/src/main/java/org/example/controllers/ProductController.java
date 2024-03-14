@@ -29,7 +29,7 @@ public class ProductController {
 
     @GetMapping("/get_history/{id}")
     public List<HistoryCollectProduct> getHistoryCollectProductAtTimeById(@RequestParam("days") Integer days,
-                                                                          @PathVariable Long id) {
+                                                                          @PathVariable Integer id) {
         return historyProductService.getInfoAtTime(days, id);
     }
 

@@ -26,7 +26,7 @@ public class HistoryProductServiceImpl implements HistoryProductService {
 
     @Override
     @PreAuthorize("hasAuthority('ADMIN')")
-    public List<HistoryCollectProduct> getInfoAtTime(Integer days, Long id) {
+    public List<HistoryCollectProduct> getInfoAtTime(Integer days, Integer id) {
         return historyCollectProductRepository.findProductsCollectedAt(LocalDateTime.now().minusDays(days),
                 LocalDateTime.now()).stream()
                 .filter(history -> history.getUser().getId().equals(id))

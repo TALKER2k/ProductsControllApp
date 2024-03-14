@@ -7,5 +7,5 @@ import java.util.List;
 public interface HistoryProductService {
     List<HistoryCollectProduct> getInfoAtTime(Integer days);
 
-    List<HistoryCollectProduct> getInfoAtTime(Integer days, Long id);
+    List<HistoryCollectProduct> getInfoAtTime(Integer days, Integer id);
 }

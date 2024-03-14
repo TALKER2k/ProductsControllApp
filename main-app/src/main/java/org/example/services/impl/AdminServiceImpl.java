@@ -20,11 +20,11 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     @PreAuthorize("hasAuthority('ADMIN')")
     public void dismissalUser(BlockedDTO blockedDTO) {
-        User user = userRepository.findByEmail(blockedDTO.getEmail()).orElseThrow(() ->
+        User userForBlock = userRepository.findByEmail(blockedDTO.getEmail()).orElseThrow(() ->
                 new RuntimeException("User not found"));
-        if (user.getUserName().equals(blockedDTO.getUsername())) {
-            user.setActive(false);
-            userRepository.save(user);
+        if (userForBlock.getUserName().equals(blockedDTO.getUsername())) {
+            userForBlock.setActive(false);
+            userRepository.save(userForBlock);
         } else {
             throw new RuntimeException("Username and email not equals");
         }
