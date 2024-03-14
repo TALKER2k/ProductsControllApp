@@ -103,12 +103,18 @@ public class AuthServiceImpl implements AuthService {
         return userRepository.existsByUserName(username);
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
     private User converToUser(RegisterDTO registerDto) {
         Role roles = roleRepository.findByRoleName(SecurityConstants.USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 
         return new User()
                 .setUserName(registerDto.getUsername())
+                .setEmail(registerDto.getEmail())
                 .setPassword(passwordEncoder.encode((registerDto.getPassword())))
                 .setUserRoles(Collections.singletonList(roles));
     }

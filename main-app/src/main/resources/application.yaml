@@ -1,11 +1,19 @@
 server:
   port: 8080
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5433/test
     username: postgres
     password: postgres
+
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    protocol: smtps
+    username: nunikasnikun26504228@yandex.ru
+    password: NuNiKaS26504
 
   jpa:
     open-in-view: on

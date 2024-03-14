@@ -40,6 +40,10 @@ public class AuthController {
             return ResponseEntity.badRequest()
                     .header("Server message", "Username is taken")
                     .build();
+        } else if (authService.existsByEmail(registerDto.getEmail())) {
+            return ResponseEntity.badRequest()
+                    .header("Server message", "Email is taken")
+                    .build();
         }
 
         authService.checkErrors(bindingResult);

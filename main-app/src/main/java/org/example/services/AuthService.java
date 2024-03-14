@@ -11,4 +11,5 @@ public interface AuthService {
     String loginUser(LoginDTO loginDto);
     void checkErrors(BindingResult bindingResult);
     boolean existsByUserName(String username);
+    boolean existsByEmail(String email);
 }

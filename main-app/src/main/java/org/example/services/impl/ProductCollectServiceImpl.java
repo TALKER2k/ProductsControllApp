@@ -12,6 +12,7 @@ import org.example.repositories.ProductUserRepository;
 import org.example.repositories.UserRepository;
 import org.example.services.ProductCollectService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +32,7 @@ public class ProductCollectServiceImpl implements ProductCollectService {
     }
 
     @Override
+    @Transactional
     public void collectProduct(CollectProductDTO collectProductDTO, String username) {
         User user = userRepository.findByUserName(username).orElseThrow();
         Product product = productRepository.findByName(collectProductDTO.getName()).orElseThrow();
@@ -43,7 +45,7 @@ public class ProductCollectServiceImpl implements ProductCollectService {
         historyCollectProductRepository.save(historyCollectProduct);
 
         ProductUser productUser = productUserRepository.findByUserIdAndProductId(user.getId(), product.getId());
-        productUser.setRemainder(product.getRemainder() - collectProductDTO.getCollect());
+        productUser.setRemainder(productUser.getRemainder() - collectProductDTO.getCollect());
         productUserRepository.save(productUser);
     }
 

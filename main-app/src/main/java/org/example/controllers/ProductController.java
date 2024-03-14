@@ -23,14 +23,14 @@ public class ProductController {
     }
 
     @GetMapping("/get_history")
-    public List<HistoryCollectProduct> getHistoryCollectProductAtTime(@RequestParam("hour") Integer hour) {
-        return historyProductService.getInfoAtTime(hour);
+    public List<HistoryCollectProduct> getHistoryCollectProductAtTime(@RequestParam("days") Integer days) {
+        return historyProductService.getInfoAtTime(days);
     }
 
     @GetMapping("/get_history/{id}")
-    public List<HistoryCollectProduct> getHistoryCollectProductAtTimeById(@RequestParam("hour") Integer hour,
+    public List<HistoryCollectProduct> getHistoryCollectProductAtTimeById(@RequestParam("days") Integer days,
                                                                           @PathVariable Long id) {
-        return historyProductService.getInfoAtTime(hour, id);
+        return historyProductService.getInfoAtTime(days, id);
     }
 
     @PostMapping("/add")

@@ -13,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class ProductCollectController {
     private final ProductCollectService productCollectService;
 
-    public UserController(ProductCollectService userService) {
+    public ProductCollectController(ProductCollectService userService) {
         this.productCollectService = userService;
     }
 
