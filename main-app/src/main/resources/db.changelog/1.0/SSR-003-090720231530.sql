@@ -7,6 +7,8 @@ CREATE TABLE users
     is_active BOOLEAN DEFAULT TRUE
 );
 
+CREATE INDEX users_index ON users(id, user_name);
+
 INSERT INTO users VALUES (1, 'Admin', 'admin@mail.com', '$2a$10$WeVR/Cd68PiLvodrehbqgO67mNKS7JquORFUTT/1cKcGXYQgUnHCK');
 INSERT INTO users VALUES (2, 'User', 'user@mail.com', '$2a$10$.HEmz6f60zGy6Pvuzmwsfujrur0iFajlFCsrf1KGRBi/ep7pRjfCa');
 
@@ -35,9 +37,11 @@ CREATE TABLE products
     remainder        DOUBLE PRECISION CHECK (remainder >= 0)
 );
 
+CREATE INDEX products_index ON products(id, name_product);
+
 INSERT INTO products VALUES (1, 'Milk', 'ml', 10.5);
 
-CREATE TABLE user_products
+CREATE TABLE user_target
 (
     id         SERIAL PRIMARY KEY,
     user_id    INTEGER REFERENCES users (id),
@@ -45,14 +49,14 @@ CREATE TABLE user_products
     remainder  DOUBLE PRECISION CHECK (remainder >= 0)
 );
 
-INSERT INTO user_products VALUES (1,1,1,10.5);
-INSERT INTO user_products VALUES (2,2,1,10.5);
+INSERT INTO user_target VALUES (1,1,1,10.5);
+INSERT INTO user_target VALUES (2,2,1,10.5);
 
-CREATE TABLE history_products
+CREATE TABLE history_pick_products
 (
     id          SERIAL PRIMARY KEY,
-    collect     DOUBLE PRECISION,
+    pick     DOUBLE PRECISION,
     product_id  INTEGER REFERENCES products (id),
     user_id     INTEGER REFERENCES users (id),
-    collected_at TIMESTAMP
+    pick_at TIMESTAMP
 );
