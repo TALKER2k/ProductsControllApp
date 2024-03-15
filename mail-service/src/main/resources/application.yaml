@@ -7,7 +7,7 @@ spring:
     port: 465
     protocol: smtps
     username: nunikasnikun26504228@yandex.ru
-    password: NuNiKaS26504
+    password: 
 
   datasource:
     driver-class-name: org.postgresql.Driver
