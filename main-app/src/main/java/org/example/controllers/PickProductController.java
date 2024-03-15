@@ -36,8 +36,10 @@ public class PickProductController {
     }
 
     @GetMapping("/check_my_pick")
-    public List<ProductDTO> getMyCollectProducts() {
+    public ResponseEntity<List<ProductDTO>> getMyPickProducts() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return pickProductService.getListProductForPick(auth.getName());
+        return ResponseEntity.ok()
+                .header("Server message", "Request all pick product succeeded")
+                .body(pickProductService.getListProductForPick(auth.getName()));
     }
 }

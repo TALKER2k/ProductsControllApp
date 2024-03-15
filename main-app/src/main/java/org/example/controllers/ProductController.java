@@ -23,14 +23,18 @@ public class ProductController {
     }
 
     @GetMapping("/get_history")
-    public List<HistoryPickProduct> getHistoryPickProductAtTime(@RequestParam("days") Integer days) {
-        return historyProductService.getInfoAtTime(days);
+    public ResponseEntity<List<HistoryPickProduct>> getHistoryPickProductAtTime(@RequestParam("days") Integer days) {
+        return ResponseEntity.ok()
+                .header("Server message", "Request history pick products by days succeeded")
+                .body(historyProductService.getInfoAtTime(days));
     }
 
     @GetMapping("/get_history/{id}")
-    public List<HistoryPickProduct> getHistoryPickProductAtTimeById(@RequestParam("days") Integer days,
+    public ResponseEntity<List<HistoryPickProduct>> getHistoryPickProductAtTimeById(@RequestParam("days") Integer days,
                                                                     @PathVariable Integer id) {
-        return historyProductService.getInfoAtTime(days, id);
+        return ResponseEntity.ok()
+                .header("Server message", "Request history pick products by days and id succeeded")
+                .body(historyProductService.getInfoAtTime(days, id));
     }
 
     @PostMapping("/add")
