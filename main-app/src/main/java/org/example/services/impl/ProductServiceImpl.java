@@ -2,12 +2,13 @@ package org.example.services.impl;
 
 import org.example.DTO.ProductDTO;
 import org.example.models.Product;
-import org.example.models.ProductUser;
+import org.example.models.UserTarget;
 import org.example.models.User;
 import org.example.repositories.ProductRepository;
-import org.example.repositories.ProductUserRepository;
+import org.example.repositories.UserTargetRepository;
 import org.example.repositories.UserRepository;
 import org.example.services.ProductService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +17,15 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
-    private final ProductUserRepository productUserRepository;
-    private  final UserRepository userRepository;
+    private final UserTargetRepository userTargetRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductUserRepository purposeOfCollectionRepository, UserRepository userRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, UserTargetRepository purposeOfCollectionRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.productRepository = productRepository;
-        this.productUserRepository = purposeOfCollectionRepository;
+        this.userTargetRepository = purposeOfCollectionRepository;
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -35,21 +38,19 @@ public class ProductServiceImpl implements ProductService {
         List<User> users = userRepository.findAll();
 
         for (User user : users) {
-            ProductUser productUser = new ProductUser()
+            UserTarget userTarget = new UserTarget()
                     .setUser(user)
                     .setProduct(product)
-                    .setRemainder(productDTO.getRemainder());
+                    .setRemainder(product.getRemainder());
 
-            productUserRepository.save(productUser);
+            userTargetRepository.save(userTarget);
         }
 
         return product;
     }
 
     private Product convertToProduct(ProductDTO productDTO) {
-        return new Product().setName(productDTO.getName())
-                .setMeasurementUnit(productDTO.getMeasurementUnit())
-                .setRemainder(productDTO.getRemainder());
+        return modelMapper.map(productDTO, Product.class);
     }
 
     @Override

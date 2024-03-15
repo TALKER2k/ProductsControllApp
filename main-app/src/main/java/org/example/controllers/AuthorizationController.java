@@ -1,12 +1,13 @@
 package org.example.controllers;
 
 import jakarta.validation.Valid;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.example.DTO.AuthResponseDTO;
+import org.example.DTO.AuthorizationResponseDTO;
 import org.example.DTO.LoginDTO;
-import org.example.DTO.RegisterDTO;
+import org.example.DTO.RegistrationFormDTO;
 import org.example.models.User;
-import org.example.services.AuthService;
+import org.example.services.AuthorizationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -15,50 +16,51 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
-    private final AuthService authService;
+public class AuthorizationController {
+    private final AuthorizationService authorizationService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    public AuthorizationController(AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDTO loginDto) {
+    public ResponseEntity<AuthorizationResponseDTO> login(@RequestBody LoginDTO loginDto) {
 
-        String token = authService.loginUser(loginDto);
+        String token = authorizationService.loginUser(loginDto);
 
         return ResponseEntity.ok()
                 .header("Server message", "Login succeeded")
-                .body(new AuthResponseDTO(token));
+                .body(new AuthorizationResponseDTO(token));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody @Valid RegisterDTO registerDto,
+    public ResponseEntity<User> register(@RequestBody @Valid RegistrationFormDTO registrationFormDto,
                                          BindingResult bindingResult) {
 
-        if (authService.existsByUserName(registerDto.getUsername())) {
+        if (authorizationService.existsByUserName(registrationFormDto.getUsername())) {
             return ResponseEntity.badRequest()
                     .header("Server message", "Username is taken")
                     .build();
-        } else if (authService.existsByEmail(registerDto.getEmail())) {
+        } else if (authorizationService.existsByEmail(registrationFormDto.getEmail())) {
             return ResponseEntity.badRequest()
                     .header("Server message", "Email is taken")
                     .build();
         }
 
-        authService.checkErrors(bindingResult);
+        authorizationService.checkErrors(bindingResult);
 
-        User user = authService.registerUser(registerDto);
+        User user = authorizationService.registerUser(registrationFormDto);
 
         return ResponseEntity.ok()
                 .header("Server message", "User registered successfully")
                 .body(user);
     }
 
+    @SneakyThrows
     @PostMapping("/registerAdmin/{id}")
     public ResponseEntity<String> registerAdmin(@PathVariable Integer id) {
         try {
-            authService.registerAdmin(id);
+            authorizationService.registerAdmin(id);
             return ResponseEntity.ok()
                     .header("Server message", "User applied to admin role successfully")
                     .build();

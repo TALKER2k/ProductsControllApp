@@ -3,11 +3,11 @@ package org.example.DTO;
 import lombok.Data;
 
 @Data
-public class AuthResponseDTO {
+public class AuthorizationResponseDTO {
     private String accessToken;
     private String tokenType = "Bearer ";
 
-    public AuthResponseDTO(String accessToken) {
+    public AuthorizationResponseDTO(String accessToken) {
         this.accessToken = accessToken;
     }
 }

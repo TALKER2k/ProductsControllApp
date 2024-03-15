@@ -2,8 +2,8 @@ package org.example.DTO;
 
 import jakarta.validation.constraints.NotEmpty;
 
-public record LoginDTO(
+public record BlockedUserDTO(
         @NotEmpty(message = "Username name should be not empty") String username,
-        @NotEmpty(message = "Password name should be not empty") String password
+        @NotEmpty(message = "Email name should be not empty") String email
 ) {
 }

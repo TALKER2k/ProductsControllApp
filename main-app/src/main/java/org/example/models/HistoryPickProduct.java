@@ -7,17 +7,17 @@ import lombok.experimental.Accessors;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "history_products")
+@Table(name = "history_pick_products")
 @Data
 @Accessors(chain = true)
-public class HistoryCollectProduct {
+public class HistoryPickProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "collect")
-    private Double collect;
+    @Column(name = "pick")
+    private Double pick;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -27,6 +27,6 @@ public class HistoryCollectProduct {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "collected_at")
-    private LocalDateTime collectedAt;
+    @Column(name = "pick_at")
+    private LocalDateTime pickAt;
 }

@@ -5,7 +5,7 @@ databaseChangeLog:
   - changeSet:
       id: SSR-003-090720231530
       author: Nikita Pushkin
-      comment: Create bd
+      comment: Create db and indexes
       runOnChange: true
       changes:
         - sqlFile:

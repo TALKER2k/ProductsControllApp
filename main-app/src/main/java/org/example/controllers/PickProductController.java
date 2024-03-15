@@ -1,9 +1,9 @@
 package org.example.controllers;
 
 import jakarta.validation.Valid;
-import org.example.DTO.CollectProductDTO;
+import org.example.DTO.PickProductDTO;
 import org.example.DTO.ProductDTO;
-import org.example.services.ProductCollectService;
+import org.example.services.PickProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,18 +13,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-public class ProductCollectController {
-    private final ProductCollectService productCollectService;
+public class PickProductController {
+    private final PickProductService pickProductService;
 
-    public ProductCollectController(ProductCollectService userService) {
-        this.productCollectService = userService;
+    public PickProductController(PickProductService pickProductService) {
+        this.pickProductService = pickProductService;
     }
 
-    @PostMapping("/collect_product")
-    public ResponseEntity<String> createProduct(@RequestBody @Valid CollectProductDTO collectProductDTO) {
+    @PostMapping("/pick_product")
+    public ResponseEntity<String> createProduct(@RequestBody @Valid PickProductDTO pickProductDTO) {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            productCollectService.collectProduct(collectProductDTO, auth.getName());
+            pickProductService.pickProduct(pickProductDTO, auth.getName());
             return ResponseEntity.ok()
                     .header("Server message", "User collected successfully")
                     .build();
@@ -35,9 +35,9 @@ public class ProductCollectController {
         }
     }
 
-    @GetMapping("/check_my_collect")
+    @GetMapping("/check_my_pick")
     public List<ProductDTO> getMyCollectProducts() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return productCollectService.getListProductForCollect(auth.getName());
+        return pickProductService.getListProductForPick(auth.getName());
     }
 }

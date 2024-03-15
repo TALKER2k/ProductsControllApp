@@ -1,4 +1,4 @@
-import org.example.DTO.BlockedDTO;
+import org.example.DTO.BlockedUserDTO;
 import org.example.models.User;
 import org.example.repositories.UserRepository;
 import org.example.services.impl.AdminServiceImpl;
@@ -28,11 +28,11 @@ public class AdminServiceImplTest {
     @Test
     public void testBlockUser() {
         User user = new User().setId(1).setUserName("User").setEmail("user@mail.com");
-        BlockedDTO blockedDTO = new BlockedDTO(user.getUserName(), user.getEmail());
+        BlockedUserDTO blockedUserDTO = new BlockedUserDTO(user.getUserName(), user.getEmail());
 
         when(userRepository.findByEmail("user@mail.com")).thenReturn(Optional.of(user));
 
-        adminService.dismissalUser(blockedDTO);
+        adminService.dismissalUser(blockedUserDTO);
 
         verify(userRepository, times(1)).findByEmail("user@mail.com");
     }

@@ -6,10 +6,10 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 @Entity
-@Table(name = "user_products")
+@Table(name = "user_target")
 @Data
 @Accessors(chain = true)
-public class ProductUser {
+public class UserTarget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

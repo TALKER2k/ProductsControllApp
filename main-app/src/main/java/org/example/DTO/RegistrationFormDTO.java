@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class RegisterDTO {
+public class RegistrationFormDTO {
     @NotBlank(message = "Username name should be not empty")
     private String username;
     @NotBlank(message = "Email name should be not empty")

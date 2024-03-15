@@ -2,16 +2,17 @@ package org.example.services.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.DTO.LoginDTO;
-import org.example.DTO.RegisterDTO;
+import org.example.DTO.RegistrationFormDTO;
 import org.example.models.Role;
 import org.example.models.User;
 import org.example.repositories.RoleRepository;
 import org.example.repositories.UserRepository;
 import org.example.security.JWTGenerator;
 import org.example.security.SecurityConstants;
-import org.example.services.AuthService;
+import org.example.services.AuthorizationService;
 import org.example.utils.exceptions.UserCreatedException;
 import org.example.utils.responses.UserErrorResponse;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,19 +31,22 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class AuthServiceImpl implements AuthService {
+public class AuthorizationServiceImpl implements AuthorizationService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JWTGenerator jwtGenerator;
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JWTGenerator jwtGenerator) {
+    private final ModelMapper modelMapper;
+
+    public AuthorizationServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JWTGenerator jwtGenerator, ModelMapper modelMapper) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtGenerator = jwtGenerator;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -61,8 +65,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public User registerUser(RegisterDTO registerDto) {
-        User registeredUser = converToUser(registerDto);
+    public User registerUser(RegistrationFormDTO registrationFormDto) {
+        User registeredUser = convertToUser(registrationFormDto);
         userRepository.save(registeredUser);
 
         return registeredUser;
@@ -70,12 +74,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String loginUser(LoginDTO loginDto) {
-        log.info("Authentication. User {}", loginDto.getUsername());
+        log.info("Authentication. User {}", loginDto.username());
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginDto.getUsername(),
-                        loginDto.getPassword()));
+                        loginDto.username(),
+                        loginDto.password()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtGenerator.generateToken(authentication);
@@ -108,14 +112,12 @@ public class AuthServiceImpl implements AuthService {
         return userRepository.existsByEmail(email);
     }
 
-    private User converToUser(RegisterDTO registerDto) {
+    private User convertToUser(RegistrationFormDTO registrationFormDTO) {
         Role roles = roleRepository.findByRoleName(SecurityConstants.USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 
-        return new User()
-                .setUserName(registerDto.getUsername())
-                .setEmail(registerDto.getEmail())
-                .setPassword(passwordEncoder.encode((registerDto.getPassword())))
+        return modelMapper.map(registrationFormDTO, User.class)
+                .setPassword(passwordEncoder.encode((registrationFormDTO.getPassword())))
                 .setUserRoles(Collections.singletonList(roles));
     }
 

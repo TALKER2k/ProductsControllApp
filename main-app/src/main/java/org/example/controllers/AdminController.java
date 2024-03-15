@@ -1,9 +1,11 @@
 package org.example.controllers;
 
-import org.example.DTO.BlockedDTO;
+import org.example.DTO.BlockedUserDTO;
 import org.example.services.AdminService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/admin")
@@ -15,8 +17,7 @@ public class AdminController {
     }
 
     @PatchMapping("/dismissal")
-    public ResponseEntity<?> setUserActiveToFalse(@RequestBody BlockedDTO blockedDTO) {
-        adminService.dismissalUser(blockedDTO);
-        return ResponseEntity.ok().build();
+    public void setUserActiveToFalse(@RequestBody BlockedUserDTO blockedUserDTO) {
+        adminService.dismissalUser(blockedUserDTO);
     }
 }

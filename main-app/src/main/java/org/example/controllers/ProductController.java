@@ -2,7 +2,7 @@ package org.example.controllers;
 
 import jakarta.validation.Valid;
 import org.example.DTO.ProductDTO;
-import org.example.models.HistoryCollectProduct;
+import org.example.models.HistoryPickProduct;
 import org.example.models.Product;
 import org.example.services.HistoryProductService;
 import org.example.services.ProductService;
@@ -23,13 +23,13 @@ public class ProductController {
     }
 
     @GetMapping("/get_history")
-    public List<HistoryCollectProduct> getHistoryCollectProductAtTime(@RequestParam("days") Integer days) {
+    public List<HistoryPickProduct> getHistoryPickProductAtTime(@RequestParam("days") Integer days) {
         return historyProductService.getInfoAtTime(days);
     }
 
     @GetMapping("/get_history/{id}")
-    public List<HistoryCollectProduct> getHistoryCollectProductAtTimeById(@RequestParam("days") Integer days,
-                                                                          @PathVariable Integer id) {
+    public List<HistoryPickProduct> getHistoryPickProductAtTimeById(@RequestParam("days") Integer days,
+                                                                    @PathVariable Integer id) {
         return historyProductService.getInfoAtTime(days, id);
     }
 

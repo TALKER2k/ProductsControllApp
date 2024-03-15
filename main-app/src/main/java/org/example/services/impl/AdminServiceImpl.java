@@ -1,6 +1,6 @@
 package org.example.services.impl;
 
-import org.example.DTO.BlockedDTO;
+import org.example.DTO.BlockedUserDTO;
 import org.example.models.User;
 import org.example.repositories.UserRepository;
 import org.example.services.AdminService;
@@ -19,10 +19,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void dismissalUser(BlockedDTO blockedDTO) {
-        User userForBlock = userRepository.findByEmail(blockedDTO.getEmail()).orElseThrow(() ->
+    public void dismissalUser(BlockedUserDTO blockedUserDTO) {
+        User userForBlock = userRepository.findByEmail(blockedUserDTO.email()).orElseThrow(() ->
                 new RuntimeException("User not found"));
-        if (userForBlock.getUserName().equals(blockedDTO.getUsername())) {
+        if (userForBlock.getUserName().equals(blockedUserDTO.username())) {
             userForBlock.setActive(false);
             userRepository.save(userForBlock);
         } else {

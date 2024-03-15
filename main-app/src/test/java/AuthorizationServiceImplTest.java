@@ -1,10 +1,10 @@
-import org.example.DTO.RegisterDTO;
+import org.example.DTO.RegistrationFormDTO;
 import org.example.models.Role;
 import org.example.models.User;
 import org.example.repositories.RoleRepository;
 import org.example.repositories.UserRepository;
 import org.example.security.SecurityConstants;
-import org.example.services.impl.AuthServiceImpl;
+import org.example.services.impl.AuthorizationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
-public class AuthServiceImplTest {
+public class AuthorizationServiceImplTest {
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -25,7 +25,7 @@ public class AuthServiceImplTest {
     @Mock
     private PasswordEncoder passwordEncoder;
     @InjectMocks
-    private AuthServiceImpl authService;
+    private AuthorizationServiceImpl authService;
 
     @BeforeEach
     public void setUp() {
@@ -52,11 +52,11 @@ public class AuthServiceImplTest {
                 .setUsers(List.of(user));
         when(roleRepository.findByRoleName(anyString())).thenReturn(Optional.of(role));
 
-        RegisterDTO registerDTO = new RegisterDTO()
+        RegistrationFormDTO registrationFormDTO = new RegistrationFormDTO()
                 .setUsername(userName)
                 .setEmail(email)
                 .setPassword(password);
-        authService.registerUser(registerDTO);
+        authService.registerUser(registrationFormDTO);
 
         verify(userRepository, times(1)).save(any(User.class));
         verify(passwordEncoder, times(1)).encode(password);
