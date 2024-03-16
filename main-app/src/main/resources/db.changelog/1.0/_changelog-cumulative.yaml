@@ -3,11 +3,31 @@ databaseChangeLog:
       - dbms:
           type: postgresql
   - changeSet:
-      id: SSR-003-090720231530
+      id: 110320241833_001_init_tables
       author: Nikita Pushkin
-      comment: Create db and indexes
+      comment: Create db structure
       runOnChange: true
       changes:
         - sqlFile:
-            path: SSR-003-090720231530.sql
+            path: 110320241833_001_init_tables.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 110320241852_002_init_indexes
+      author: Nikita Pushkin
+      comment: Create indexes users and products
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: 110320241852_002_init_indexes.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 110320241923_003_insert_into_tables
+      author: Nikita Pushkin
+      comment: add users, roles, product
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: 110320241923_003_insert_into_tables.sql
             relativeToChangelogFile: true
