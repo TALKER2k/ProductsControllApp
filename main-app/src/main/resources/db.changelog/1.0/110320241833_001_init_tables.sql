@@ -31,8 +31,8 @@ CREATE TABLE products
 CREATE TABLE user_target
 (
     id         SERIAL PRIMARY KEY,
-    user_id    INTEGER REFERENCES users (id),
-    product_id INTEGER REFERENCES products (id),
+    user_id    INTEGER REFERENCES users (id) ON DELETE CASCADE,
+    product_id INTEGER REFERENCES products (id) ON DELETE CASCADE,
     pick  DOUBLE PRECISION CHECK (pick >= 0)
 );
 

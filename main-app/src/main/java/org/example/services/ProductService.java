@@ -7,4 +7,6 @@ public interface ProductService {
     Product addProducts(ProductDTO productDTO);
 
     boolean existsByUserName(String name);
+
+    void delete(Integer id);
 }

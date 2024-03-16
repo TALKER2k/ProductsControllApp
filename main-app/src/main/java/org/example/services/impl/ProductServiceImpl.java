@@ -54,6 +54,11 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.existsByName(name);
     }
 
+    @Override
+    public void delete(Integer id) {
+        productRepository.deleteById(id);
+    }
+
     private Product convertToProduct(ProductDTO productDTO) {
         return modelMapper.map(productDTO, Product.class);
     }

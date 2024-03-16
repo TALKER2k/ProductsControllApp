@@ -51,4 +51,9 @@ public class ProductController {
                 .header("Server message", "Product saved successfully")
                 .body(product);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteProduct(@PathVariable Integer id) {
+        productService.delete(id);
+    }
 }
