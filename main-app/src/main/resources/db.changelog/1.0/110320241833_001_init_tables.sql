@@ -25,18 +25,16 @@ CREATE TABLE products
     id               SERIAL PRIMARY KEY,
     name_product     VARCHAR(255),
     measurement_unit VARCHAR(50),
-    remainder        DOUBLE PRECISION CHECK (remainder >= 0)
+    pick        DOUBLE PRECISION CHECK (pick >= 0)
 );
-
 
 CREATE TABLE user_target
 (
     id         SERIAL PRIMARY KEY,
     user_id    INTEGER REFERENCES users (id),
     product_id INTEGER REFERENCES products (id),
-    remainder  DOUBLE PRECISION CHECK (remainder >= 0)
+    pick  DOUBLE PRECISION CHECK (pick >= 0)
 );
-
 
 CREATE TABLE history_pick_products
 (

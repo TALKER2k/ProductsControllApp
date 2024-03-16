@@ -51,13 +51,4 @@ public class ProductController {
                 .header("Server message", "Product saved successfully")
                 .body(product);
     }
-
-    @DeleteMapping("/{productName}")
-    public ResponseEntity<String> deleteProduct(@PathVariable String productName) {
-        productService.delete(productName);
-
-        return ResponseEntity.ok()
-                .header("Server message", "Product deleted successfully")
-                .build();
-    }
 }

@@ -6,7 +6,7 @@ import org.example.DTO.ProductDTO;
 import java.util.List;
 
 public interface PickProductService {
-    void pickProduct(PickProductDTO collectProductDTO, String username);
+    void pickProduct(PickProductDTO pickProductDTO, String username);
 
     List<ProductDTO> getListProductForPick(String username);
 }

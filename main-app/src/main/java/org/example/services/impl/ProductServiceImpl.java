@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
             UserTarget userTarget = new UserTarget()
                     .setUser(user)
                     .setProduct(product)
-                    .setRemainder(product.getRemainder());
+                    .setPick(product.getPick());
 
             userTargetRepository.save(userTarget);
         }
@@ -49,18 +49,12 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
-    private Product convertToProduct(ProductDTO productDTO) {
-        return modelMapper.map(productDTO, Product.class);
-    }
-
-    @Override
-    public void delete(String product) {
-        productRepository.delete(productRepository.findByName(product)
-                .orElseThrow(() -> new RuntimeException("Product not found")));
-    }
-
     @Override
     public boolean existsByUserName(String name) {
         return productRepository.existsByName(name);
+    }
+
+    private Product convertToProduct(ProductDTO productDTO) {
+        return modelMapper.map(productDTO, Product.class);
     }
 }

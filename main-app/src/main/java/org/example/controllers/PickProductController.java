@@ -26,11 +26,11 @@ public class PickProductController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             pickProductService.pickProduct(pickProductDTO, auth.getName());
             return ResponseEntity.ok()
-                    .header("Server message", "User collected successfully")
+                    .header("Server message", "User picked successfully")
                     .build();
         } catch (Exception ex) {
             return ResponseEntity.internalServerError()
-                    .header("Server message", "User collected unsuccessfully")
+                    .header("Server message", "User picked unsuccessfully")
                     .body(ex.getMessage());
         }
     }

@@ -11,5 +11,5 @@ public class ProductDTO {
     private String name;
     @NotBlank(message = "MeasurementUnit should be not empty")
     private String measurementUnit;
-    private Double remainder;
+    private Double pick;
 }

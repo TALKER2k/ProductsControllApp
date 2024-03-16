@@ -34,18 +34,21 @@ public class PickProductServiceImpl implements PickProductService {
     @Override
     @Transactional
     public void pickProduct(PickProductDTO pickProductDTO, String username) {
-        User userCollectedProduct = userRepository.findByUserName(username).orElseThrow();
-        Product collectedProduct = productRepository.findByName(pickProductDTO.name()).orElseThrow();
+        User userPickedProduct = userRepository.findByUserName(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Product pickedProduct = productRepository.findByName(pickProductDTO.name())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
         HistoryPickProduct historyPickProduct = new HistoryPickProduct()
                 .setPick(pickProductDTO.pick())
                 .setPickAt(LocalDateTime.now())
-                .setUser(userCollectedProduct)
-                .setProduct(collectedProduct);
+                .setUser(userPickedProduct)
+                .setProduct(pickedProduct);
 
         historyPickProductRepository.save(historyPickProduct);
 
-        UserTarget userTarget = userTargetRepository.findByUserIdAndProductId(userCollectedProduct.getId(), collectedProduct.getId());
-        userTarget.setRemainder(userTarget.getRemainder() - pickProductDTO.pick());
+        UserTarget userTarget = userTargetRepository.findByUserIdAndProductId(userPickedProduct.getId(), pickedProduct.getId());
+        userTarget.setPick(userTarget.getPick() - pickProductDTO.pick());
         userTargetRepository.save(userTarget);
     }
 
@@ -57,7 +60,7 @@ public class PickProductServiceImpl implements PickProductService {
                 .map(userTarget -> new ProductDTO()
                         .setName(userTarget.getProduct().getName())
                         .setMeasurementUnit(userTarget.getProduct().getMeasurementUnit())
-                        .setRemainder(userTarget.getRemainder()))
+                        .setPick(userTarget.getPick()))
                 .toList();
     }
 }

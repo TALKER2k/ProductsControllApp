@@ -2,6 +2,7 @@ databaseChangeLog:
   - preConditions:
       - dbms:
           type: postgresql
+
   - changeSet:
       id: 110320241833_001_init_tables
       author: Nikita Pushkin

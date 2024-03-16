@@ -15,15 +15,14 @@ public class UserTarget {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    @Column(name = "remainder")
-    @Min(value = 0, message = "Remainder must be non-negative")
-    private Double remainder;
+    @Column(name = "pick")
+    private Double pick;
 }

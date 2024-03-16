@@ -1,12 +1,17 @@
 package org.example.services.impl;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.DTO.LoginDTO;
 import org.example.DTO.RegistrationFormDTO;
+import org.example.models.Product;
 import org.example.models.Role;
 import org.example.models.User;
+import org.example.models.UserTarget;
+import org.example.repositories.ProductRepository;
 import org.example.repositories.RoleRepository;
 import org.example.repositories.UserRepository;
+import org.example.repositories.UserTargetRepository;
 import org.example.security.JWTGenerator;
 import org.example.security.SecurityConstants;
 import org.example.services.AuthorizationService;
@@ -29,6 +34,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.Collections;
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 @Slf4j
 public class AuthorizationServiceImpl implements AuthorizationService {
@@ -37,17 +43,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JWTGenerator jwtGenerator;
+    private final ProductRepository productRepository;
+    private final UserTargetRepository userTargetRepository;
 
     private final ModelMapper modelMapper;
-
-    public AuthorizationServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JWTGenerator jwtGenerator, ModelMapper modelMapper) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtGenerator = jwtGenerator;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     @Transactional
@@ -68,6 +67,17 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public User registerUser(RegistrationFormDTO registrationFormDto) {
         User registeredUser = convertToUser(registrationFormDto);
         userRepository.save(registeredUser);
+
+        List<Product> productList = productRepository.findAll();
+
+        for (Product product : productList) {
+            UserTarget userTarget = new UserTarget()
+                    .setUser(registeredUser)
+                    .setProduct(product)
+                    .setPick(product.getPick());
+
+            userTargetRepository.save(userTarget);
+        }
 
         return registeredUser;
     }
@@ -118,7 +128,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
         return modelMapper.map(registrationFormDTO, User.class)
                 .setPassword(passwordEncoder.encode((registrationFormDTO.getPassword())))
-                .setUserRoles(Collections.singletonList(roles));
+                .setUserRoles(Collections.singletonList(roles))
+                .setActive(true);
     }
 
     @ExceptionHandler

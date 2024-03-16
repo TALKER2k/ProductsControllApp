@@ -5,6 +5,8 @@ INSERT INTO roles VALUES (0, 'ADMIN'),
                          (1, 'USER');
 
 INSERT INTO user_roles VALUES (1, 0);
+INSERT INTO user_roles VALUES (1, 1);
+INSERT INTO user_roles VALUES (2, 1);
 
 INSERT INTO products VALUES (1, 'Milk', 'ml', 10.5);
 

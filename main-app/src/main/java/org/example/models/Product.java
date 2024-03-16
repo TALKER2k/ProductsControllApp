@@ -1,7 +1,6 @@
 package org.example.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -21,7 +20,6 @@ public class Product {
     @Column(name = "measurement_unit")
     private String measurementUnit;
 
-    @Column(name = "remainder")
-    @Min(value = 0, message = "Remainder must be non-negative")
-    private Double remainder;
+    @Column(name = "pick")
+    private Double pick;
 }
